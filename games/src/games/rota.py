@@ -81,13 +81,20 @@ class Rota(Game):
     def _decode_move(move : int) -> tuple:
         """_summary_
 
+        takes in move and returns tuple with from and to cells
+        
         Args:
-            move (int): _description_
+            move (int): integer containing next move information
 
         Returns:
-            tuple: _description_
+            tuple: contains source and destination of move. source is None if placement phase
         """
-        pass
+        if move < 10:
+            # placement phase
+            return None, move
+        m = move - 10 # first digit becomes cell num from 0-8
+        return m // 10, m % 10 # returns from (first dig), and two (second dig)
+        
 
     def start(self) -> int:
         """
