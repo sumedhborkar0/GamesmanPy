@@ -29,13 +29,40 @@ class Rota(Game):
         if variant_id not in Rota.variants:
             raise ValueError("Variant not defined")
         self._variant_id = variant_id
-        self.
+        self._lines = LINES
+
+
+    def _unpack(position : int) -> tuple[list[int], int]:
+        """_summary_
+        takes in the position int and performs bitwise operations to 
+        get turn num and position list
+
+        Args:
+            position (int): integer storing board position and turn
+
+        Returns:
+            tuple[list[int], int]: tuple containing board state, int containing turn num
+        """
+        
+        turn = position & 1 #isolates last bit of the position aka the turn num
+        position = position >> 1 #get rid of final turn bit
+        board = []
+        
+
+        # will shift bits of position by 2 every iteration, since 2 bits to store each cell
+        # take those bits rightmost and append them to board
+    
+        for i in range(9):
+            board.append(position & 0b11) # mask to get last two bits of pos
+            position = position >> 2 #shift off curr cell bits
+        return board, turn
+
 
     def start(self) -> int:
         """
         Returns the starting position of the game.
         """
-        pass
+        return 0
     
     def generate_moves(self, position: int) -> list[int]:
         """
