@@ -57,6 +57,26 @@ class Rota(Game):
             position = position >> 2 #shift off curr cell bits
         return board, turn
 
+    def _pack(board: list[int], turn: int) -> int:
+        """_summary_
+    
+            Args:
+                board (list[int]): list with integers to represent the pieces on the board
+                turn (int): 0 or 1, whose turn it is
+    
+            Returns:
+                int: 19 bit integer with whose turn it is and positions of pieces on board
+    
+            takes in board as list and turn (0 or 1) and encodes those into 19 bit
+            value where first bit is whose turn (0 or 1) and rest is what piece in which
+            position (01 is X, 10 is 0, 00 is empty)
+            Ex. (0b1000000000000000010) means X turn and O in position 0, X in position 8
+            """         
+        position = turn
+        for i in range(9):
+            position |= board[i] << (2 * i + 1)
+        return position
+    
 
     def start(self) -> int:
         """
