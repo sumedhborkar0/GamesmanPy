@@ -1,7 +1,22 @@
 from models import Game, Value, StringMode
 from typing import Optional
 
-class Example(Game):
+EMPTY, X, O = 0, 1, 2 # integers for cell status
+CHARS = ['-', 'x', 'o'] # chars for cell status
+
+RING = [0, 1, 2, 5, 8, 7, 6, 3] # ring of cell numbers around the board
+CENTER = 4
+NEIGHBORS = [None] * 9 # list of 9 elements
+for idx, cell in enumerate(RING):
+    NEIGHBORS[cell] = [RING[idx - 1], RING[idx + 1], CENTER] # creating adjacency list
+NEIGBORS[CENTER] = RING[:] # all elems adjacent to center
+
+# winning lines below
+DIAMETERS = [(0, 4, 8), (2, 4, 6), (3, 4, 5), (1, 4, 7)]
+RIM_LINES = [(RING[i], RING[(i+1) % 8], RING[(i+2) % 8]) for i in range(8)]
+LINES = DIAMETERS + RIM_LINES # winning positions
+
+class Rota(Game):
     id = 'rota'
     variants = ["regular"]
     n_players = 2
@@ -11,10 +26,10 @@ class Example(Game):
         """
         Define instance variables here (i.e. variant information)
         """
-        if variant_id not in Example.variants:
+        if variant_id not in Rota.variants:
             raise ValueError("Variant not defined")
         self._variant_id = variant_id
-        pass
+        self.
 
     def start(self) -> int:
         """
