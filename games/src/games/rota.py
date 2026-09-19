@@ -124,7 +124,17 @@ class Rota(Game):
         """
         Returns a string representation of the position based on the given mode.
         """
-        pass
+        board, turn = self._unpack(position)
+        cells = ''.join(CHARS[c] for c in board)
+
+        if mode == StringMode.AUTOGUI:
+            return ('1_' if turn == 0 else '2_') + cells
+
+        if mode == StringMode.TUI:
+            rows = [' '.join(cells[r * 3:(r + 1) * 3]) for r in range(3)]
+            return '\n'.join(rows)
+
+        return cells + ('x' if turn == 0 else 'o')
 
     def from_string(self, strposition: str) -> int:
         """
