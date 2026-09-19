@@ -9,7 +9,7 @@ CENTER = 4
 NEIGHBORS = [None] * 9 # list of 9 elements
 for idx, cell in enumerate(RING):
     NEIGHBORS[cell] = [RING[idx - 1], RING[idx + 1], CENTER] # creating adjacency list
-NEIGBORS[CENTER] = RING[:] # all elems adjacent to center
+NEIGHBORS[CENTER] = RING[:] # all elems adjacent to center
 
 # winning lines below
 DIAMETERS = [(0, 4, 8), (2, 4, 6), (3, 4, 5), (1, 4, 7)]
