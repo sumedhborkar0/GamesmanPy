@@ -57,6 +57,7 @@ class Rota(Game):
             position = position >> 2 #shift off curr cell bits
         return board, turn
 
+
     def _pack(board: list[int], turn: int) -> int:
         """_summary_
     
@@ -76,7 +77,17 @@ class Rota(Game):
         for i in range(9):
             position |= board[i] << (2 * i + 1)
         return position
-    
+
+    def _decode_move(move : int) -> tuple:
+        """_summary_
+
+        Args:
+            move (int): _description_
+
+        Returns:
+            tuple: _description_
+        """
+        pass
 
     def start(self) -> int:
         """
