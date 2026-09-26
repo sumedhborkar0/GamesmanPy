@@ -8,7 +8,7 @@ RING = [0, 1, 2, 5, 8, 7, 6, 3] # ring of cell numbers around the board
 CENTER = 4
 NEIGHBORS = [None] * 9 # list of 9 elements
 for idx, cell in enumerate(RING):
-    NEIGHBORS[cell] = [RING[idx - 1], RING[idx + 1], CENTER] # creating adjacency list
+    NEIGHBORS[cell] = [RING[idx - 1], RING[(idx + 1) % 8], CENTER] # creating adjacency list
 NEIGHBORS[CENTER] = RING[:] # all elems adjacent to center
 
 # winning lines below
@@ -32,7 +32,7 @@ class Rota(Game):
         self._lines = LINES
 
 
-    def _unpack(position : int) -> tuple[list[int], int]:
+    def _unpack(self, position : int) -> tuple[list[int], int]:
         """_summary_
         takes in the position int and performs bitwise operations to 
         get turn num and position list
@@ -58,7 +58,7 @@ class Rota(Game):
         return board, turn
 
 
-    def _pack(board: list[int], turn: int) -> int:
+    def _pack(self, board: list[int], turn: int) -> int:
         """_summary_
     
             Args:
@@ -71,14 +71,14 @@ class Rota(Game):
             takes in board as list and turn (0 or 1) and encodes those into 19 bit
             value where first bit is whose turn (0 or 1) and rest is what piece in which
             position (01 is X, 10 is 0, 00 is empty)
-            Ex. (0b1000000000000000010) means X turn and O in position 0, X in position 8
+            Ex. (0b1000000000000000010) means X turn and X in position 0, O in position 8
             """         
         position = turn
         for i in range(9):
             position |= board[i] << (2 * i + 1)
         return position
 
-    def _decode_move(move : int) -> tuple:
+    def _decode_move(self, move : int) -> tuple:
         """_summary_
 
         takes in move and returns tuple with from and to cells
@@ -137,11 +137,22 @@ class Rota(Game):
         return cells + ('x' if turn == 0 else 'o')
 
     def from_string(self, strposition: str) -> int:
-        """
+        """_summary_
         Returns the position from a string representation of the position.
         Input string is StringMode.Readable.
+
+        Args:
+            strposition (str): "----------" first 9 chars are board, last char is turn
+
+        Returns:
+            int: board position in int
         """
-        pass
+        board = [CHARS.index(strposition[i]) for i in range(9)]
+        
+        turn = 0 if strposition[-1] == 'x' else 1
+        return self._pack(board, turn)
+        
+        
 
     def move_to_string(self, move: int, mode: StringMode) -> str:
         """
