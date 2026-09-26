@@ -115,11 +115,20 @@ class Rota(Game):
         pass
 
     def primitive(self, position: int) -> Optional[Value]:
-        """
-        Returns a Value enum which defines whether the current position is a win, loss, or non-terminal. 
-        """
-        pass
+        """_summary_
 
+        Args:
+            position (int): position and turn, is a 19 bit integer
+
+        Returns:
+            primitive value: Loss if there is a winning position for the opponent on this turn, else None
+        """
+        board, turn = self._unpack(position)
+        for row in self._lines:
+            if (board[row[0]] == board[row[1]] == board[row[2]] ) and board[row[1]] != EMPTY:
+                return Value.Loss
+        return None
+            
     def to_string(self, position: int, mode: StringMode) -> str:
         """
         Returns a string representation of the position based on the given mode.
