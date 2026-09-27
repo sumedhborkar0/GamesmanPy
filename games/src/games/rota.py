@@ -207,6 +207,15 @@ class Rota(Game):
         """
         Returns a string representation of the move based on the given mode.
         """
-        pass
+        source , destination = self._decode_move(move)
+        if mode == StringMode.AUTOGUI:
+            if source == None:
+                return f'A_-_{destination}'
+            else:
+                return f'M_{source}_{destination}'
+        if source == None:
+            return f'{destination}'
+        else:
+            return f'{source}{destination}'
 
     
