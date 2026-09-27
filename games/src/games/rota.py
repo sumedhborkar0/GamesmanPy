@@ -141,7 +141,18 @@ class Rota(Game):
         """
         Returns the resulting position of applying move to position.
         """
-        pass
+        board, turn = self._unpack(position)
+        source, destination = self._decode_move(move)
+        if source == None:
+            if turn == 0:
+                board[destination] = X
+            else:
+                board[destination] = O
+        else:
+            board[source] = EMPTY
+            board[destination] = X if turn == 0 else O
+
+        return self._pack(board, 1 - turn)
 
     def primitive(self, position: int) -> Optional[Value]:
         """_summary_
