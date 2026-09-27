@@ -103,10 +103,39 @@ class Rota(Game):
         return 0
     
     def generate_moves(self, position: int) -> list[int]:
-        """
+        """_summary_
         Returns a list of positions given the input position.
+
+        Args:
+            position (int): position integer for board
+
+        Returns:
+            list[int]: list of ints containing legal moves
         """
-        pass
+        if self.primitive(position) is not None:
+            return []
+
+        board, turn = self._unpack(position)
+        filled_cells = 0
+        for cell in board:
+            if cell != EMPTY:
+                filled_cells += 1
+
+        if filled_cells < 6:
+            return [i for i in range(9) if board[i] == EMPTY]
+
+        moves = []
+        if turn == 0:
+            # X's turn
+            for i in range(len(board)):
+                if board[i] == X:
+                    moves.extend([10 + i*10 + n for n in NEIGHBORS[i] if board[n] == EMPTY])
+        else:
+            for i in range(len(board)):
+                if board[i] == O:
+                    moves.extend([10 + i*10 + n for n in NEIGHBORS[i] if board[n] == EMPTY])
+        return moves
+    
     
     def do_move(self, position: int, move: int) -> int:
         """
