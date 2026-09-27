@@ -2,7 +2,7 @@ from models import Game, Value, StringMode
 from typing import Optional
 
 EMPTY, X, O = 0, 1, 2 # integers for cell status
-CHARS = ['-', 'x', 'o'] # chars for cell status
+CHARS = ['-', 'X', 'O'] # chars for cell status
 
 RING = [0, 1, 2, 5, 8, 7, 6, 3] # ring of cell numbers around the board
 CENTER = 4
@@ -15,6 +15,8 @@ NEIGHBORS[CENTER] = RING[:] # all elems adjacent to center
 DIAMETERS = [(0, 4, 8), (2, 4, 6), (3, 4, 5), (1, 4, 7)]
 RIM_LINES = [(RING[i], RING[(i+1) % 8], RING[(i+2) % 8]) for i in range(8)]
 LINES = DIAMETERS + RIM_LINES # winning positions
+
+
 
 class Rota(Game):
     id = 'rota'
@@ -180,10 +182,9 @@ class Rota(Game):
             return ('1_' if turn == 0 else '2_') + cells
 
         if mode == StringMode.TUI:
-            rows = [' '.join(cells[r * 3:(r + 1) * 3]) for r in range(3)]
-            return '\n'.join(rows)
+            return self._render_tui(board)
 
-        return cells + ('x' if turn == 0 else 'o')
+        return cells + ('X' if turn == 0 else 'O')
 
     def from_string(self, strposition: str) -> int:
         """_summary_
@@ -198,9 +199,26 @@ class Rota(Game):
         """
         board = [CHARS.index(strposition[i]) for i in range(9)]
         
-        turn = 0 if strposition[-1] == 'x' else 1
+        turn = 0 if strposition[-1] == 'X' else 1
         return self._pack(board, turn)
-        
+
+    def _render_tui(self, board):
+        characters = [ CHARS[board[i]] if board[i] != EMPTY else "●" for i in range(9)]
+        _ART = [
+            f"      ╭── {characters[1]} ──╮",
+            f"     ╱    │    ╲",
+            f"    {characters[0]}     │     {characters[2]}",
+            f"  ╱    ╲  │  ╱    ╲",
+            f"{characters[3]} ─────── {characters[4]} ─────── {characters[5]}",
+            f"  ╲    ╱  │  ╲    ╱",
+            f"    {characters[6]}     │     {characters[8]}",
+            f"     ╲    │    ╱",
+            f"      ╰── {characters[7]} ──╯",
+        ]
+        return "\n".join(_ART)
+
+
+
         
 
     def move_to_string(self, move: int, mode: StringMode) -> str:
