@@ -216,6 +216,6 @@ class Rota(Game):
         if source == None:
             return f'{destination}'
         else:
-            return f'{source}{destination}'
+            return f'{source}-{destination}'
 
     
