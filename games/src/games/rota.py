@@ -182,7 +182,7 @@ class Rota(Game):
             return ('1_' if turn == 0 else '2_') + cells
 
         if mode == StringMode.TUI:
-            return self._render_tui(board)
+            return self._render_tui(board, turn)
 
         return cells + ('X' if turn == 0 else 'O')
 
@@ -202,7 +202,7 @@ class Rota(Game):
         turn = 0 if strposition[-1] == 'X' else 1
         return self._pack(board, turn)
 
-    def _render_tui(self, board):
+    def _render_tui(self, board, turn):
         characters = [ CHARS[board[i]] if board[i] != EMPTY else "●" for i in range(9)]
         _ART = [
             f"      ╭── {characters[1]} ──╮",
@@ -214,6 +214,9 @@ class Rota(Game):
             f"    {characters[6]}     │     {characters[8]}",
             f"     ╲    │    ╱",
             f"      ╰── {characters[7]} ──╯",
+            f"",
+            f"Turn: {'X' if turn == 0 else 'O'}",
+            f""
         ]
         return "\n".join(_ART)
 
